@@ -8,7 +8,7 @@
 class TrayControl {
 public:
     TrayControl(int stepPin, int dirPin, int backlimit, int frontlimit);
-    int move(int current_pos, int target_pos, int spd = DEFAULT_TRAY_SPEED);
+    int move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
     int resetFront(int spd = DEFAULT_TRAY_SPEED);
     int resetBack(int spd = DEFAULT_TRAY_SPEED);
 
@@ -17,10 +17,10 @@ private:
     int dirPin;
     int backlimit;
     int frontlimit;
-    int current_pos;
+    int current_pos = 0;
 
     const float GEAR_DIAMETER = 19.15;
-    const int STEPS_PER_REV = 1600;
+    const int STEPS_PER_REV = 1600; 
     const int STROKE_LENGTH = 335;
 };
 

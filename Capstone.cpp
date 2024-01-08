@@ -8,10 +8,7 @@ TrayControl::TrayControl(int stepPin, int dirPin, int backlimit, int frontlimit)
   pinMode(frontlimit, INPUT);
 }
 
-// void TrayControl::begin() {
-// }
-
-int TrayControl::move(int current_pos, int target_pos, int spd) {
+int TrayControl::move(int target_pos, int spd) {
   int diff_pos = (target_pos - current_pos) * STEPS_PER_REV / (3.1415 * GEAR_DIAMETER);
   bool dir;
 
