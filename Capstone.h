@@ -1,17 +1,16 @@
-#ifndef StepperTrayControl_h
-#define StepperTrayControl_h
+#ifndef Capstone_h
+#define Capstone_h
 
 #include "Arduino.h"
 
-class StepperTrayControl {
-public:
-    StepperTrayControl(int stepPin, int dirPin, int backlimit, int frontlimit);
-    void initialize();
-    void updatePosition();
+#define DEFAULT_TRAY_SPEED 500
 
-    int moveTray(int target_pos, int spd);
-    int resetTrayFront(int spd);
-    int resetTrayBack(int spd);
+class TrayControl {
+public:
+    TrayControl(int stepPin, int dirPin, int backlimit, int frontlimit);
+    int move(int current_pos, int target_pos, int spd = DEFAULT_TRAY_SPEED);
+    int resetFront(int spd = DEFAULT_TRAY_SPEED);
+    int resetBack(int spd = DEFAULT_TRAY_SPEED);
 
 private:
     int stepPin;
@@ -20,7 +19,6 @@ private:
     int frontlimit;
     int current_pos;
 
-    const int DELAY = 500;
     const float GEAR_DIAMETER = 19.15;
     const int STEPS_PER_REV = 1600;
     const int STROKE_LENGTH = 335;

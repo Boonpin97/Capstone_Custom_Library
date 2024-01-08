@@ -1,31 +1,17 @@
 #include "Capstone.h"
 
-StepperTrayControl::StepperTrayControl(int stepPin, int dirPin, int backlimit, int frontlimit)
+TrayControl::TrayControl(int stepPin, int dirPin, int backlimit, int frontlimit)
   : stepPin(stepPin), dirPin(dirPin), backlimit(backlimit), frontlimit(frontlimit) {
-}
-
-void StepperTrayControl::initialize() {
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(backlimit, INPUT);
   pinMode(frontlimit, INPUT);
-
-  Serial.begin(115200);
-  delay(500);
-
-  current_pos = resetTrayBack(500);
-  delay(1000);
 }
 
-void StepperTrayControl::updatePosition() {
-  if (Serial.available() != 0) {
-    int target_pos = Serial.parseInt();
-    Serial.print("Target position: "); Serial.println(target_pos);
-    current_pos = moveTray(target_pos, 400);
-  }
-}
+// void TrayControl::begin() {
+// }
 
-int StepperTrayControl::moveTray(int target_pos, int spd) {
+int TrayControl::move(int current_pos, int target_pos, int spd) {
   int diff_pos = (target_pos - current_pos) * STEPS_PER_REV / (3.1415 * GEAR_DIAMETER);
   bool dir;
 
@@ -56,12 +42,11 @@ int StepperTrayControl::moveTray(int target_pos, int spd) {
       }
     }
 
-    Serial.print("Current position: "); Serial.println(current_pos);
     return current_pos;
   }
 }
 
-int StepperTrayControl::resetTrayFront(int spd) {
+int TrayControl::resetFront(int spd) {
   digitalWrite(dirPin, HIGH);
 
   while (!digitalRead(frontlimit)) {
@@ -75,7 +60,7 @@ int StepperTrayControl::resetTrayFront(int spd) {
   return current_pos;
 }
 
-int StepperTrayControl::resetTrayBack(int spd) {
+int TrayControl::resetBack(int spd) {
   digitalWrite(dirPin, LOW);
 
   while (!digitalRead(backlimit)) {
