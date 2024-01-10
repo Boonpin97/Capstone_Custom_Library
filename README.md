@@ -1,6 +1,6 @@
 # Capstone Custom Library
 
-## `void move(int target_pos, int spd)`
+## `void move(int target_pos, int spd = 500)`
 A function that controls the position of the tray. Takes in a position argument and moves the tray according to the position. Every time the tray hits the limit switch, that position will be reset to the new neutral position. Outputs no argument.
 
 ### Input
@@ -10,7 +10,7 @@ A function that controls the position of the tray. Takes in a position argument 
 ### Output
 - `current_pos` (int): Returns the updated position of the tray.
 
-## `void resetFront(int spd)`
+## `void resetFront(int spd = 500)`
 A function that resets the position of the tray. This function moves the tray to the **front** and stops.
 
 ### Input
@@ -19,7 +19,7 @@ A function that resets the position of the tray. This function moves the tray to
 ### Output
 - `current_pos` (int): Returns the updated position of the tray
 
-## `void resetBack(int spd)`
+## `void resetBack(int spd = 500)`
 A function that resets the position of the tray. This function moves the tray to the **back** and stops.
 
 ### Input
