@@ -1,4 +1,4 @@
-# Tray_Control
+# Tray Control
 This library has been specifically developed for my capstone project, aiming to support computer science counterparts in interpreting data from hardware sensors and actuators. The primary goal is to simplify the intricate process of coding for hardware by encapsulating it into straightforward functions.
 
 ## Installation
