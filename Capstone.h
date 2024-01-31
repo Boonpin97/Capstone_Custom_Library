@@ -24,15 +24,18 @@ public:
     int resetFront(int spd = DEFAULT_TRAY_SPEED);
     int resetBack(int spd = DEFAULT_TRAY_SPEED);
     float *readLuxs();
+    void disable();
+
+    int current_pos = 0;
 
 private:
     // Parameters
-    static const int DEFAULT_TRAY_SPEED = 500;
+    static const int DEFAULT_TRAY_SPEED = 10;
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
     static const int STROKE_LENGTH = 334;
-    static const int MIN_DELAY = 200;
-    static const int MAX_DELAY = 2200;
+    static const int MIN_DELAY = 100;
+    static const int MAX_DELAY = 1100;
     static const int NUM_LIGHT_SENSOR = 6;
     static const int LIGHT_LOW_THRESHOLD = 10000;
     static const int LIGHT_HIGH_THRESHOLD = 20000;
@@ -42,10 +45,10 @@ private:
     int dirPin;
     int backlimit;
     int frontlimit;
-    int current_pos = 0;
 
     Adafruit_VEML7700 light_sensor[NUM_LIGHT_SENSOR];
 
     void tcaselect(uint8_t i);
+    int speedToDelay(int spd);
 };
 #endif
