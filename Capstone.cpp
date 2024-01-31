@@ -167,4 +167,26 @@ void Tray::disableTray()
   digitalWrite(ENABLE_PIN, HIGH);
 }
 
+float Tray::readTempBack()
+{
+  frontDHT11.read(BACK_DHT_PIN);
+  return frontDHT11.temperature;
+}
 
+float Tray::readTempFront()
+{
+  backDHT11.read(FRONT_DHT_PIN);
+  return backDHT11.temperature;
+}
+
+float Tray::readHumiBack()
+{
+  frontDHT11.read(BACK_DHT_PIN);
+  return frontDHT11.humidity;
+}
+
+float Tray::readHumiFront()
+{
+  backDHT11.read(FRONT_DHT_PIN);
+  return backDHT11.humidity;
+}

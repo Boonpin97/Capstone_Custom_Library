@@ -3,12 +3,15 @@
 
 #include "Arduino.h"
 #include "Adafruit_VEML7700.h"
+#include "dht11.h"
 
 #define STEP_PIN 33
 #define DIR_PIN 32
 #define ENABLE_PIN 25
 #define BACK_LIMIT_PIN 36
 #define FRONT_LIMIT_PIN 39
+#define BACK_DHT_PIN 16
+#define FRONT_DHT_PIN 17
 #define SDA_PIN 21
 #define SCL_PIN 22
 #define GROWLIGHT_PIN 13
@@ -24,7 +27,10 @@ public:
     int resetBack(int spd = DEFAULT_TRAY_SPEED);
     float *readLuxs();
     void disableTray();
-
+    float readTempFront();
+    float readTempBack();
+    float readHumiFront();
+    float readHumiBack();
     int current_pos = 0;
 
 private:
@@ -46,6 +52,8 @@ private:
     int frontlimit;
 
     Adafruit_VEML7700 light_sensor[NUM_LIGHT_SENSOR];
+    dht11 frontDHT11;
+    dht11 backDHT11;
 
     void tcaselect(uint8_t i);
     int speedToDelay(int spd);
