@@ -13,6 +13,7 @@ void Tray::begin()
   pinMode(dirPin, OUTPUT);
   pinMode(backlimit, INPUT);
   pinMode(frontlimit, INPUT);
+  pinMode(ENABLE_PIN, OUTPUT);
 
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
   {
@@ -39,8 +40,10 @@ void Tray::begin()
 
 int Tray::move(int target_pos, int spd)
 {
+  digitalWrite(ENABLE_PIN, LOW);
   float K = STEPS_PER_REV / (3.1415 * GEAR_DIAMETER);
   bool dir;
+  int delay = speedToDelay(spd);
   if (target_pos - current_pos != 0)
   {
     if (target_pos - current_pos > 0)
@@ -72,27 +75,31 @@ int Tray::move(int target_pos, int spd)
       else
       {
         digitalWrite(stepPin, HIGH);
-        delayMicroseconds(spd);
+        delayMicroseconds(delay);
         digitalWrite(stepPin, LOW);
-        delayMicroseconds(spd);
+        delayMicroseconds(delay);
       }
     }
     if (!(digitalRead(frontlimit) || digitalRead(backlimit)))
-      current_pos++;
+      if (dir)
+        current_pos++;
+      else
+        current_pos--;
   }
   return current_pos;
 }
 
 int Tray::resetFront(int spd)
 {
+  int delay = speedToDelay(spd);
   digitalWrite(dirPin, LOW);
 
   while (!digitalRead(frontlimit))
   {
     digitalWrite(stepPin, HIGH);
-    delayMicroseconds(spd);
+    delayMicroseconds(delay);
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(spd);
+    delayMicroseconds(delay);
   }
 
   current_pos = STROKE_LENGTH;
@@ -101,14 +108,15 @@ int Tray::resetFront(int spd)
 
 int Tray::resetBack(int spd)
 {
+  int delay = speedToDelay(spd);
   digitalWrite(dirPin, HIGH);
 
   while (!digitalRead(backlimit))
   {
     digitalWrite(stepPin, HIGH);
-    delayMicroseconds(spd);
+    delayMicroseconds(delay);
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(spd);
+    delayMicroseconds(delay);
   }
 
   current_pos = 0;
@@ -148,3 +156,20 @@ void Tray::tcaselect(uint8_t i)
   }
   return;
 }
+
+int Tray::speedToDelay(int spd)
+{
+  if (spd > 100)
+    spd = 100;
+  else if (spd < 1)
+    spd = 1;
+  int delay = -450 * log10(spd) + 1000;
+  return delay;
+}
+
+void Tray::disable()
+{
+  digitalWrite(ENABLE_PIN, HIGH);
+}
+
+
