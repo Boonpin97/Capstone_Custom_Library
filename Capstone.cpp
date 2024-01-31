@@ -162,7 +162,7 @@ int Tray::speedToDelay(int spd)
   return delay;
 }
 
-void Tray::disable()
+void Tray::disableTray()
 {
   digitalWrite(ENABLE_PIN, HIGH);
 }

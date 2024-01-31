@@ -23,7 +23,7 @@ public:
     int resetFront(int spd = DEFAULT_TRAY_SPEED);
     int resetBack(int spd = DEFAULT_TRAY_SPEED);
     float *readLuxs();
-    void disable();
+    void disableTray();
 
     int current_pos = 0;
 
