@@ -14,6 +14,8 @@
 #define FRONT_DHT_PIN 17
 #define SDA_PIN 21
 #define SCL_PIN 22
+#define ESTOP_PIN 27
+#define CURRENT_SENSOR_PIN 26
 #define GROWLIGHT_PIN 13
 #define WIFILIGHT_PIN 19
 #define RESET_PIN 0
@@ -31,6 +33,8 @@ public:
     float readTempBack();
     float readHumiFront();
     float readHumiBack();
+    bool eStopPressed();
+
     int current_pos = 0;
 
 private:

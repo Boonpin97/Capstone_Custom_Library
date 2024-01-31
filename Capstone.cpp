@@ -9,7 +9,8 @@ void Tray::begin()
   pinMode(BACK_LIMIT_PIN, INPUT);
   pinMode(FRONT_LIMIT_PIN, INPUT);
   pinMode(ENABLE_PIN, OUTPUT);
-
+  pinMode(ESTOP_PIN, INPUT);
+  
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
   {
     tcaselect(i);
@@ -189,4 +190,9 @@ float Tray::readHumiFront()
 {
   backDHT11.read(FRONT_DHT_PIN);
   return backDHT11.humidity;
+}
+
+bool Tray::eStopPressed()
+{
+  return digitalRead(ESTOP_PIN);
 }
