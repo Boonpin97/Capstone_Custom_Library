@@ -17,11 +17,9 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    target_pos = Serial.parseInt();                            // Read integer input from serial monitor
+    target_pos = Serial.parseInt();                                 // Read integer input from serial monitor
     Serial.print("Target position: "); Serial.println(target_pos); // Print out the target position of the tray
   }
-  else{
-    int current = myTray.move(target_pos, 200);                   // Move the tray to the target position
-    //Serial.print("Current position: "); Serial.println(current);   // Print out the current position of the tray
-  }
+  myTray.move(target_pos, 50);                                              // Move the tray to the target position
+  Serial.print("Current position: "); Serial.println(myTray.current_pos);  // Print out the current position of the tray
 }
