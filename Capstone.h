@@ -18,7 +18,6 @@
 class Tray
 {
 public:
-    Tray(int stepPin = STEP_PIN, int dirPin = DIR_PIN, int backlimit = BACK_LIMIT_PIN, int frontlimit = FRONT_LIMIT_PIN);
     void begin();
     int move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
     int resetFront(int spd = DEFAULT_TRAY_SPEED);

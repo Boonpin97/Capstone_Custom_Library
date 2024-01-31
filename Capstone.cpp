@@ -1,18 +1,13 @@
 #include "Capstone.h"
 
-Tray::Tray(int stepPin, int dirPin, int backlimit, int frontlimit)
-    : stepPin(stepPin), dirPin(dirPin), backlimit(backlimit), frontlimit(frontlimit)
-{
-}
-
 void Tray::begin()
 {
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
-  pinMode(backlimit, INPUT);
-  pinMode(frontlimit, INPUT);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(BACK_LIMIT_PIN, INPUT);
+  pinMode(FRONT_LIMIT_PIN, INPUT);
   pinMode(ENABLE_PIN, OUTPUT);
 
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
@@ -49,17 +44,17 @@ int Tray::move(int target_pos, int spd)
     if (target_pos - current_pos > 0)
     {
       dir = true;
-      digitalWrite(dirPin, LOW);
+      digitalWrite(DIR_PIN, LOW);
     }
     else
     {
       dir = false;
-      digitalWrite(dirPin, HIGH);
+      digitalWrite(DIR_PIN, HIGH);
     }
     for (int i = 0; i < K; i++)
     {
-      bool front_pressed = digitalRead(frontlimit);
-      bool back_pressed = digitalRead(backlimit);
+      bool front_pressed = digitalRead(FRONT_LIMIT_PIN);
+      bool back_pressed = digitalRead(BACK_LIMIT_PIN);
       if ((front_pressed || !dir) && (back_pressed || dir))
       {
         if (front_pressed)
@@ -74,13 +69,13 @@ int Tray::move(int target_pos, int spd)
       }
       else
       {
-        digitalWrite(stepPin, HIGH);
+        digitalWrite(STEP_PIN, HIGH);
         delayMicroseconds(delay);
-        digitalWrite(stepPin, LOW);
+        digitalWrite(STEP_PIN, LOW);
         delayMicroseconds(delay);
       }
     }
-    if (!(digitalRead(frontlimit) || digitalRead(backlimit)))
+    if (!(digitalRead(FRONT_LIMIT_PIN) || digitalRead(BACK_LIMIT_PIN)))
       if (dir)
         current_pos++;
       else
@@ -92,13 +87,13 @@ int Tray::move(int target_pos, int spd)
 int Tray::resetFront(int spd)
 {
   int delay = speedToDelay(spd);
-  digitalWrite(dirPin, LOW);
+  digitalWrite(DIR_PIN, LOW);
 
-  while (!digitalRead(frontlimit))
+  while (!digitalRead(FRONT_LIMIT_PIN))
   {
-    digitalWrite(stepPin, HIGH);
+    digitalWrite(STEP_PIN, HIGH);
     delayMicroseconds(delay);
-    digitalWrite(stepPin, LOW);
+    digitalWrite(STEP_PIN, LOW);
     delayMicroseconds(delay);
   }
 
@@ -109,13 +104,13 @@ int Tray::resetFront(int spd)
 int Tray::resetBack(int spd)
 {
   int delay = speedToDelay(spd);
-  digitalWrite(dirPin, HIGH);
+  digitalWrite(DIR_PIN, HIGH);
 
-  while (!digitalRead(backlimit))
+  while (!digitalRead(BACK_LIMIT_PIN))
   {
-    digitalWrite(stepPin, HIGH);
+    digitalWrite(STEP_PIN, HIGH);
     delayMicroseconds(delay);
-    digitalWrite(stepPin, LOW);
+    digitalWrite(STEP_PIN, LOW);
     delayMicroseconds(delay);
   }
 
