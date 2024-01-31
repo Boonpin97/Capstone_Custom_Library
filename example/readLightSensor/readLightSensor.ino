@@ -16,7 +16,7 @@ void loop() {
   float* luxValues = myTray.readLuxs();
 
   // Iterate through the array the pointer is pointing to and print the light readings
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < 6; i++) {
     Serial.print("Sensor "); Serial.print(i); Serial.print(": ");
     Serial.println(luxValues[i]); 
     }
