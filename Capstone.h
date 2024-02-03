@@ -34,12 +34,21 @@ public:
     float readHumiFront();
     float readHumiBack();
     bool eStopPressed();
+    bool resetPressed();
+    void setRedWhiteLight(int strip_index, int brightness = DEFAULT_BRIGHTNESS);
+    void setColor(int strip_index, int brightness = DEFAULT_BRIGHTNESS, int r = DEFAULT_RED, int g = DEFAULT_GREEN, int b = DEFAULT_BLUE);
+    void offLight(int strip_index);
 
     int current_pos = 0;
 
 private:
     // Parameters
     static const int DEFAULT_TRAY_SPEED = 10;
+    static const int DEFAULT_RED = 255;
+    static const int DEFAULT_GREEN = 0;
+    static const int DEFAULT_BLUE = 255;
+    static const int DEFAULT_BRIGHTNESS = 50;
+
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
     static const int STROKE_LENGTH = 334;
@@ -48,6 +57,7 @@ private:
     static const int NUM_LIGHT_SENSOR = 6;
     static const int LIGHT_LOW_THRESHOLD = 10000;
     static const int LIGHT_HIGH_THRESHOLD = 20000;
+    static const int NUM_LED = 20;
     static const bool LIGHT_INTERRUPT_ENABLE = true;
 
     int stepPin;
@@ -58,6 +68,8 @@ private:
     Adafruit_VEML7700 light_sensor[NUM_LIGHT_SENSOR];
     dht11 frontDHT11;
     dht11 backDHT11;
+    // Adafruit_NeoPixel strip(20, 13, NEO_GRB + NEO_KHZ800);
+    // Adafruit_NeoPixel strip;
 
     void tcaselect(uint8_t i);
     int speedToDelay(int spd);

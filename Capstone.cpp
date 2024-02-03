@@ -1,4 +1,8 @@
 #include "Capstone.h"
+#include <Adafruit_NeoPixel.h>
+
+// Tray::Tray() : strip(NUM_LED, GROWLIGHT_PIN, NEO_RGB + NEO_KHZ400) {}
+Adafruit_NeoPixel strip(20 * 4, 13, NEO_GRB + NEO_KHZ800);
 
 void Tray::begin()
 {
@@ -10,7 +14,13 @@ void Tray::begin()
   pinMode(FRONT_LIMIT_PIN, INPUT);
   pinMode(ENABLE_PIN, OUTPUT);
   pinMode(ESTOP_PIN, INPUT);
-  
+  pinMode(CURRENT_SENSOR_PIN, INPUT);
+  pinMode(RESET_PIN, OUTPUT);
+
+  strip.begin();                           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip.show();                            // Turn OFF all pixels ASAP
+  strip.setBrightness(DEFAULT_BRIGHTNESS); // Set BRIGHTNESS to about 1/5 (max = 255)
+
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
   {
     tcaselect(i);
@@ -195,4 +205,42 @@ float Tray::readHumiFront()
 bool Tray::eStopPressed()
 {
   return digitalRead(ESTOP_PIN);
+}
+
+bool Tray::resetPressed()
+{
+  return digitalRead(RESET_PIN);
+}
+
+void Tray::setRedWhiteLight(int strip_index, int brightness)
+{
+  strip.setBrightness(brightness);
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  {
+    if (i % 4 == 0)
+      strip.setPixelColor(i, strip.Color(255, 0, 0)); // Red
+    else
+      strip.setPixelColor(i, strip.Color(255, 255, 255)); // White
+  }
+  strip.show();
+  Serial.println("Hi");
+}
+
+void Tray::setColor(int strip_index, int brightness, int r, int g, int b)
+{
+  strip.setBrightness(brightness);
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  {
+    strip.setPixelColor(i, strip.Color(r, g, b));
+  }
+  strip.show();
+}
+
+void Tray::offLight(int strip_index)
+{
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  {
+    strip.setPixelColor(i, strip.Color(0, 0, 0));
+  }
+  strip.show();
 }
