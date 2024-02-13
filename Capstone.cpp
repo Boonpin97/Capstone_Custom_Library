@@ -223,7 +223,6 @@ void Tray::setRedWhiteLight(int strip_index, int brightness)
       strip.setPixelColor(i, strip.Color(255, 255, 255)); // White
   }
   strip.show();
-  Serial.println("Hi");
 }
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
