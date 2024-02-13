@@ -226,7 +226,7 @@ void Tray::setRedWhiteLight(int strip_index, int brightness)
   Serial.println("Hi");
 }
 
-void Tray::setColor(int strip_index, int brightness, int r, int g, int b)
+void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
   strip.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)

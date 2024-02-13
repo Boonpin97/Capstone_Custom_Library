@@ -36,7 +36,7 @@ public:
     bool eStopPressed();
     bool resetPressed();
     void setRedWhiteLight(int strip_index, int brightness = DEFAULT_BRIGHTNESS);
-    void setColor(int strip_index, int brightness = DEFAULT_BRIGHTNESS, int r = DEFAULT_RED, int g = DEFAULT_GREEN, int b = DEFAULT_BLUE);
+    void setColor(int strip_index, int r = DEFAULT_RED, int g = DEFAULT_GREEN, int b = DEFAULT_BLUE, int brightness = DEFAULT_BRIGHTNESS);
     void offLight(int strip_index);
 
     int current_pos = 0;
@@ -51,7 +51,7 @@ private:
 
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
-    static const int STROKE_LENGTH = 334;
+    static const int STROKE_LENGTH = 700;
     static const int MIN_DELAY = 100;
     static const int MAX_DELAY = 1100;
     static const int NUM_LIGHT_SENSOR = 6;
