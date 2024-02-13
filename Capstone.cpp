@@ -214,6 +214,8 @@ bool Tray::resetPressed()
 
 void Tray::setRedWhiteLight(int strip_index, int brightness)
 {
+  if (brightness > MAX_BRIGHTNESS)
+    brightness = MAX_BRIGHTNESS;
   strip.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
   {
@@ -227,6 +229,8 @@ void Tray::setRedWhiteLight(int strip_index, int brightness)
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
+  if (brightness > MAX_BRIGHTNESS)
+    brightness = MAX_BRIGHTNESS;
   strip.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
   {

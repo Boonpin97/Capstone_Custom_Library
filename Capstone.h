@@ -48,6 +48,7 @@ private:
     static const int DEFAULT_GREEN = 0;
     static const int DEFAULT_BLUE = 255;
     static const int DEFAULT_BRIGHTNESS = 50;
+    static const int MAX_BRIGHTNESS = 127;
 
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
