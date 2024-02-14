@@ -2,7 +2,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // Tray::Tray() : strip(NUM_LED, GROWLIGHT_PIN, NEO_RGB + NEO_KHZ400) {}
-Adafruit_NeoPixel strip(20 * 4, 13, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(NUM_LED * 4, GROWLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 
 void Tray::begin()
 {
@@ -215,8 +215,6 @@ bool Tray::resetPressed()
 
 void Tray::setRedWhiteLight(int strip_index, int brightness)
 {
-  if (brightness > MAX_BRIGHTNESS)
-    brightness = MAX_BRIGHTNESS;
   strip.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
   {
@@ -230,12 +228,10 @@ void Tray::setRedWhiteLight(int strip_index, int brightness)
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
-  if (brightness > MAX_BRIGHTNESS)
-    brightness = MAX_BRIGHTNESS;
   strip.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
   {
-    strip.setPixelColor(i, strip.Color(r, g, b));
+    strip.setPixelColor(i, strip.Color(b, r, g));
   }
   strip.show();
 }
@@ -249,9 +245,17 @@ void Tray::offLight(int strip_index)
   strip.show();
 }
 
-void Tray::readCurrent()
+void Tray::updatePower()
 {
-  int sensorValue = analogRead(CURRENT_SENSOR_PIN);
-  float current = (sensorValue * (3.3 / 4096.0)) / 1;
-  powerConsumption += (current * 24 * (millis() - timer) / 3600000);
+  int sumReading = analogRead(CURRENT_SENSOR_PIN);
+  for (int i = 0; i < NUM_READINGS - 1; i++)
+  {
+    sumReading += analogRead(CURRENT_SENSOR_PIN);
+  }
+  //current = (sumReading / NUM_READINGS * (3.3 / 4096.0)) / 1;
+  //current = sumReading / NUM_READINGS;
+  current = (0.0007 * sumReading / NUM_READINGS) + 0.174;
+  power_consumption += (current * 24.0 * (millis() - timer) / 3600000.0);
+  timer = millis();
+  return;
 }
