@@ -43,7 +43,7 @@ public:
 
     int current_pos = 0;
     float power_consumption = 0.0;
-    float current = 0.0;
+    float current_consumption = 0.0;
 
 private:
     // Parameters

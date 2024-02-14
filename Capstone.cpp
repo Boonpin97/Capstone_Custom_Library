@@ -254,8 +254,8 @@ void Tray::updatePower()
   }
   //current = (sumReading / NUM_READINGS * (3.3 / 4096.0)) / 1;
   //current = sumReading / NUM_READINGS;
-  current = (0.0007 * sumReading / NUM_READINGS) + 0.174;
-  power_consumption += (current * 24.0 * (millis() - timer) / 3600000.0);
+  current_consumption = (0.0007 * sumReading / NUM_READINGS) + 0.174;
+  power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0);
   timer = millis();
   return;
 }
