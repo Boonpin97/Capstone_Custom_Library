@@ -17,11 +17,11 @@ void Tray::begin()
   pinMode(CURRENT_SENSOR_PIN, INPUT);
   pinMode(RESET_PIN, OUTPUT);
 
-  strip.begin();                           // INITIALIZE NeoPixel strip object (REQUIRED)
-  strip.show();                            // Turn OFF all pixels ASAP
-  strip.setBrightness(DEFAULT_BRIGHTNESS); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip.begin();                            // Initialize the NeoPixel library.
+  strip.show();                             // Initialize all pixels to 'off'
+  strip.setBrightness(DEFAULT_BRIGHTNESS);  // set the brightness of the lights
 
-  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
+  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)  // loop to initialize the light sensors
   {
     tcaselect(i);
     if (!light_sensor[i].begin())
@@ -42,52 +42,52 @@ void Tray::begin()
       light_sensor[i].interruptEnable(true);
     }
   }
-  timer = millis();
+  timer = millis(); // record last time the power was updated
 }
 
 int Tray::move(int target_pos, int spd)
 {
-  digitalWrite(ENABLE_PIN, LOW);
-  float K = STEPS_PER_REV / (3.1415 * GEAR_DIAMETER);
-  bool dir;
-  int delay = speedToDelay(spd);
-  if (target_pos - current_pos != 0)
+  digitalWrite(ENABLE_PIN, LOW);                        // enable the tray
+  float K = STEPS_PER_REV / (3.1415 * GEAR_DIAMETER);   // calculate the number of steps per mm
+  bool dir;                                             // variable to store the direction of the tray
+  int delay = speedToDelay(spd);                        // convert the speed to delay             
+  if (target_pos - current_pos != 0)                    // check if the target position is different from the current position            
   {
-    if (target_pos - current_pos > 0)
+    if (target_pos - current_pos > 0)                   // check if the target position is greater than the current position
     {
       dir = true;
-      digitalWrite(DIR_PIN, LOW);
+      digitalWrite(DIR_PIN, LOW);                       // set the direction to move the tray
     }
     else
     {
       dir = false;
-      digitalWrite(DIR_PIN, HIGH);
+      digitalWrite(DIR_PIN, HIGH);                     // set the direction to move the tray
     }
-    for (int i = 0; i < K; i++)
+    for (int i = 0; i < K; i++)                        // loop to move the tray
     {
       bool front_pressed = digitalRead(FRONT_LIMIT_PIN);
       bool back_pressed = digitalRead(BACK_LIMIT_PIN);
-      if ((front_pressed || !dir) && (back_pressed || dir))
+      if ((front_pressed || !dir) && (back_pressed || dir)) // check if the front or back limit switch is pressed
       {
         if (front_pressed)
         {
-          current_pos = STROKE_LENGTH;
+          current_pos = STROKE_LENGTH;               // set the current position to the front limit switch
         }
         else if (back_pressed)
         {
-          current_pos = 0;
+          current_pos = 0;                            // set the current position to the back limit switch
         }
         break;
       }
       else
       {
-        digitalWrite(STEP_PIN, HIGH);
+        digitalWrite(STEP_PIN, HIGH);                // move the tray
         delayMicroseconds(delay);
         digitalWrite(STEP_PIN, LOW);
         delayMicroseconds(delay);
       }
     }
-    if (!(digitalRead(FRONT_LIMIT_PIN) || digitalRead(BACK_LIMIT_PIN)))
+    if (!(digitalRead(FRONT_LIMIT_PIN) || digitalRead(BACK_LIMIT_PIN))) // check if the front or back limit switch is pressed
       if (dir)
         current_pos++;
       else
@@ -98,10 +98,10 @@ int Tray::move(int target_pos, int spd)
 
 int Tray::resetFront(int spd)
 {
-  int delay = speedToDelay(spd);
-  digitalWrite(DIR_PIN, LOW);
+  int delay = speedToDelay(spd);          // convert the speed to delay
+  digitalWrite(DIR_PIN, LOW);             // set the direction to move the tray
 
-  while (!digitalRead(FRONT_LIMIT_PIN))
+  while (!digitalRead(FRONT_LIMIT_PIN))   // loop to move the tray until the front limit switch is pressed
   {
     digitalWrite(STEP_PIN, HIGH);
     delayMicroseconds(delay);
@@ -115,14 +115,14 @@ int Tray::resetFront(int spd)
 
 int Tray::resetBack(int spd)
 {
-  int delay = speedToDelay(spd);
-  digitalWrite(DIR_PIN, HIGH);
+  int delay = speedToDelay(spd);        // convert the speed to delay
+  digitalWrite(DIR_PIN, HIGH);          // set the direction to move the tray     
 
-  while (!digitalRead(BACK_LIMIT_PIN))
+  while (!digitalRead(BACK_LIMIT_PIN))  // loop to move the tray until the back limit switch is pressed
   {
-    digitalWrite(STEP_PIN, HIGH);
+    digitalWrite(STEP_PIN, HIGH);       
     delayMicroseconds(delay);
-    digitalWrite(STEP_PIN, LOW);
+    digitalWrite(STEP_PIN, LOW);        
     delayMicroseconds(delay);
   }
 
@@ -132,18 +132,18 @@ int Tray::resetBack(int spd)
 
 float *Tray::readLuxs()
 {
-  static float light_array[NUM_LIGHT_SENSOR];
-  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)
+  static float light_array[NUM_LIGHT_SENSOR];     // array to store the light readings
+  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)      // loop to read the light sensors
   {
-    tcaselect(i);
-    light_array[i] = light_sensor[i].readLux();
+    tcaselect(i);                                 // select the i2c multiplexer channel
+    light_array[i] = light_sensor[i].readLux();   // read the light sensor
   }
-  return light_array;
+  return light_array;                             // return the light readings                   
 }
 
 void Tray::tcaselect(uint8_t i)
 {
-  if (i <= 7)
+  if (i <= 7) // select the i2c multiplexer channel
   {
     Wire.beginTransmission(0x71);
     Wire.write(0);
@@ -166,11 +166,11 @@ void Tray::tcaselect(uint8_t i)
 
 int Tray::speedToDelay(int spd)
 {
-  if (spd > 100)
+  if (spd > 100)  // limit the speed from 1 to 100
     spd = 100;
-  else if (spd < 1)
+  else if (spd < 1) 
     spd = 1;
-  int delay = -450 * log10(spd) + 1000;
+  int delay = -450 * log10(spd) + 1000;   // convert the speed to delay
   return delay;
 }
 
@@ -200,62 +200,60 @@ float Tray::readHumiBack()
 float Tray::readHumiFront()
 {
   backDHT11.read(FRONT_DHT_PIN);
-  return backDHT11.humidity;
+  return backDHT11.humidity;  
 }
 
 bool Tray::eStopPressed()
 {
-  return digitalRead(ESTOP_PIN);
+  return digitalRead(ESTOP_PIN);  // read the input on digital pin 27:
 }
 
 bool Tray::resetPressed()
 {
-  return digitalRead(RESET_PIN);
+  return digitalRead(RESET_PIN);  // read the input on digital pin 0:
 }
 
 void Tray::setRedWhiteLight(int strip_index, int brightness)
 {
   strip.setBrightness(brightness);
-  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
     if (i % 4 == 0)
       strip.setPixelColor(i, strip.Color(255, 0, 0)); // Red
     else
       strip.setPixelColor(i, strip.Color(255, 255, 255)); // White
   }
-  strip.show();
+  strip.show(); // show the color of the lights
 }
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
-  strip.setBrightness(brightness);
-  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  strip.setBrightness(brightness);  // set the brightness of the lights
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
-    strip.setPixelColor(i, strip.Color(b, r, g));
+    strip.setPixelColor(i, strip.Color(b, r, g)); // set the color of the lights
   }
-  strip.show();
+  strip.show(); // show the color of the lights
 }
 
 void Tray::offLight(int strip_index)
 {
-  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)
+  for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++)   // loop to turn off the lights
   {
-    strip.setPixelColor(i, strip.Color(0, 0, 0));
+    strip.setPixelColor(i, strip.Color(0, 0, 0)); //  off the lights
   }
-  strip.show();
+  strip.show(); // show the lights are off
 }
 
 void Tray::updatePower()
 {
-  int sumReading = analogRead(CURRENT_SENSOR_PIN);
-  for (int i = 0; i < NUM_READINGS - 1; i++)
+  int sumReading = analogRead(CURRENT_SENSOR_PIN);  // read the input on analog pin 0:
+  for (int i = 0; i < NUM_READINGS - 1; i++)        // loop to take the average of the readings
   {
     sumReading += analogRead(CURRENT_SENSOR_PIN);
   }
-  //current = (sumReading / NUM_READINGS * (3.3 / 4096.0)) / 1;
-  //current = sumReading / NUM_READINGS;
-  current_consumption = (0.0007 * sumReading / NUM_READINGS) + 0.174;
-  power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0);
-  timer = millis();
+  current_consumption = (0.0007 * sumReading / NUM_READINGS) + 0.174; // convert the analog reading (which goes from 0 - 4096) to a voltage level
+  power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0); // calculate the power consumption in Wh
+  timer = millis(); // record last time the power was updated
   return;
 }
