@@ -38,8 +38,10 @@ public:
     void setRedWhiteLight(int strip_index, int brightness = DEFAULT_BRIGHTNESS);
     void setColor(int strip_index, int r = DEFAULT_RED, int g = DEFAULT_GREEN, int b = DEFAULT_BLUE, int brightness = DEFAULT_BRIGHTNESS);
     void offLight(int strip_index);
+    void readCurrent();
 
     int current_pos = 0;
+    int32_t powerConsumption = 0;
 
 private:
     // Parameters
@@ -65,6 +67,7 @@ private:
     int dirPin;
     int backlimit;
     int frontlimit;
+    long timer;
 
     Adafruit_VEML7700 light_sensor[NUM_LIGHT_SENSOR];
     dht11 frontDHT11;

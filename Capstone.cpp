@@ -42,6 +42,7 @@ void Tray::begin()
       light_sensor[i].interruptEnable(true);
     }
   }
+  timer = millis();
 }
 
 int Tray::move(int target_pos, int spd)
@@ -246,4 +247,11 @@ void Tray::offLight(int strip_index)
     strip.setPixelColor(i, strip.Color(0, 0, 0));
   }
   strip.show();
+}
+
+void Tray::readCurrent()
+{
+  int sensorValue = analogRead(CURRENT_SENSOR_PIN);
+  float current = (sensorValue * (3.3 / 4096.0)) / 1;
+  powerConsumption += (current * 24 * (millis() - timer) / 3600000);
 }
