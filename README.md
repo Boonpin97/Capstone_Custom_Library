@@ -35,9 +35,9 @@ A attribute that keeps track of the current drawn in Ampre
 
 ## Methods
 - `begin(): void`
-- `move(target_pos: int, spd: int): int`
-- `resetFront(spd: int): int`
-- `resetBack(spd: int): int`
+- `move(target_pos: int, spd: int): bool`
+- `resetFront(spd: int): bool`
+- `resetBack(spd: int): bool`
 - `disableTray(): void`
 - `readLuxs(): float*`
 - `readTempFront(): float`
@@ -56,33 +56,52 @@ A function that initalize the tray. This includes the GPIO pins declaration, set
 
 &nbsp;
 
-## `void move(int target_pos, int spd = 10)`
-A function that controls the position of the tray. Takes in a position argument and moves the tray according to the position. Every time the tray hits the limit switch, the tray will stop and updates the attribute **current_position** as the maximum length. If the target position has not been reached yet, the tray moves by 1mm each time this function is called. If the target position has been met, the tray will not move even if this function is called.
+## `bool move(int target_pos, int spd = 10)`
+A function that controls the position of the tray. Takes in a position argument and moves the tray according to the position. If the tray hits a limit switch, the tray will stop and updates the attribute **current_position** as the maximum length. If the target position has not been reached yet, the tray moves by 1mm each time this function is called. If the target position has been met, the tray will not move even if this function is called.
+
 
 ### Input
 - `int target_pos` _(0-864)_ : The targeted position of the tray in mm, with a neutral position at value 0. The tray will move to this value’s position.
 - `int spd` _(0-100)_ : Default value: 10. This argument controls the speed of the tray moving.
 
+### Output
+- `bool reached` : 
+<br>
+-Return **true** if the target position is reached or limit siwtch is hit
+<br>
+-Return **false** if target position is not reached
 &nbsp;
 
 &nbsp;
 
-## `void resetFront(int spd = 10)`
-A function that resets the position of the tray. This function moves the tray to the **front** and stops.
+## `bool resetFront(int spd = 10)`
+A function that resets the position of the tray. This function moves the tray to the **front** and stops. If the target position has not been reached yet, the tray moves by 1mm each time this function is called. If the target position has been met, the tray will not move even if this function is called.
 
 ### Input
-- `int spd` _(0-100)_ : Default value: 10. This argument controls the speed of the tray moving.
+- `int spd` _(0-100)_ : Default value: 10. This argument controls the speed of the tray moving. If the target position has not been reached yet, the tray moves by 1mm each time this function is called. If the target position has been met, the tray will not move even if this function is called.
 
+### Output
+- `bool reached` : 
+<br>
+-Return **true** if the target position is reached or limit siwtch is hit
+<br>
+-Return **false** if target position is not reached
 &nbsp;
 
 &nbsp;
  
-## `void resetBack(int spd = 10)`
+## `bool resetBack(int spd = 10)`
 A function that resets the position of the tray. This function moves the tray to the **back** and stops.
 
 ### Input
 - `int spd` _(0-100)_ : Default value: 10. This argument controls the speed of the tray moving.
 
+### Output
+- `bool reached` : 
+<br>
+-Return **true** if the target position is reached or limit siwtch is hit
+<br>
+-Return **false** if target position is not reached
 &nbsp;
 
 &nbsp;
