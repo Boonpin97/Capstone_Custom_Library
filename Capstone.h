@@ -25,9 +25,9 @@ class Tray
 {
 public:
     void begin();
-    int move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
-    int resetFront(int spd = DEFAULT_TRAY_SPEED);
-    int resetBack(int spd = DEFAULT_TRAY_SPEED);
+    bool move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
+    bool resetFront(int spd = DEFAULT_TRAY_SPEED);
+    bool resetBack(int spd = DEFAULT_TRAY_SPEED);
     float *readLuxs();
     void disableTray();
     float readTempFront();
@@ -61,8 +61,9 @@ private:
     static const int LIGHT_HIGH_THRESHOLD = 20000;
     static const bool LIGHT_INTERRUPT_ENABLE = true;
     static const int NUM_READINGS = 20;
+    static constexpr float STEPS_PER_MM = STEPS_PER_REV / (3.1415 * GEAR_DIAMETER); // calculate the number of steps per mm
 
-    int stepPin;
+    int stepPin;    
     int dirPin;
     int backlimit;
     int frontlimit;
