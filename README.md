@@ -112,17 +112,17 @@ A function that unlocks the tray to allow it to be free moving
 
 &nbsp;
  
-## `float* readLuxs()`
+## `float readLuxs()`
 A function that cycles through each port of the multiplexer, reads the light sensor values connected to individual ports, and stores them inside an array. Outputs the pointer address of the array.
 
 ### Output
-- `float* array` : A pointer to an array of size 6, that contains the lux readings of the 6 light sensors
+- `float array` : A pointer to an array of size 6, that contains the lux readings of the 6 light sensors
 
 &nbsp;
 
 &nbsp;
  
-## `float* readTempFront()`
+## `float readTempFront()`
 A function that returns the value of the temperature sensor at the front of the tray in °C.
 
 ### Output
@@ -132,7 +132,7 @@ A function that returns the value of the temperature sensor at the front of the 
 
 &nbsp;
  
-## `float* readTempBack()`
+## `float readTempBack()`
 A function that returns the value of the temperature sensor at the back of the tray in °C.
 
 ### Output
@@ -141,7 +141,7 @@ A function that returns the value of the temperature sensor at the back of the t
 
 &nbsp;
  
-## `float* readHumiFront()`
+## `float readHumiFront()`
 A function that returns the value of the humidity sensor at the front of the tray in °C.
 
 ### Output
@@ -151,7 +151,7 @@ A function that returns the value of the humidity sensor at the front of the tra
 
 &nbsp;
  
-## `float* readTHumiBack()`
+## `float readTHumiBack()`
 A function that returns the value of the humidity sensor at the back of the tray in °C.
 
 ### Output
