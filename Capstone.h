@@ -37,7 +37,7 @@ public:
     bool eStopPressed();
     bool resetPressed();
     void setRedWhiteLight(int strip_index, int brightness = DEFAULT_BRIGHTNESS);
-    void setColor(int strip_index, int r = DEFAULT_RED, int g = DEFAULT_GREEN, int b = DEFAULT_BLUE, int brightness = DEFAULT_BRIGHTNESS);
+    void setColor(int strip_index, int r, int g, int b, int brightness = DEFAULT_BRIGHTNESS);
     void offLight(int strip_index);
     void updatePower();
 
@@ -48,9 +48,6 @@ public:
 private:
     // Parameters
     static const int DEFAULT_TRAY_SPEED = 10;
-    static const int DEFAULT_RED = 255;
-    static const int DEFAULT_GREEN = 0;
-    static const int DEFAULT_BLUE = 255;
     static const int DEFAULT_BRIGHTNESS = 50;
     static const int MAX_BRIGHTNESS = 127;
 
