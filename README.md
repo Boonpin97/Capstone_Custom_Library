@@ -62,7 +62,7 @@ A function that controls the position of the tray. Takes in a position argument 
 
 
 ### Input
-- `int target_pos` _(0-780)_ : The targeted position of the tray in mm, with a neutral position at value 0. The tray will move to this value’s position.
+- `int target_pos` _(0-774)_ : The targeted position of the tray in mm, with a neutral position at value 0. The tray will move to this value’s position.
 - `int spd` _(0-100)_ : Default value: 10. This argument controls the speed of the tray moving.
 
 ### Output
