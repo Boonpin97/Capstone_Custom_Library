@@ -49,6 +49,7 @@ A attribute that keeps track of the current drawn in Ampre
 - `setRedWhiteLight(strip_index: int, brightness: int): void`
 -  `setColor(strip_index: int, r: int, g: int, b: int, brightness: int): void`
 - `offLight(strip_index: int): void`
+- `setStatusLight(r: int, g: int, b: int, brightness: int): void`
 - `updatePower(): void`
 
 ## `void begin()`
@@ -209,6 +210,18 @@ This function controls individual strips of LED. This functions turns on 1 red L
 
 ### Input
 - `int strip_index` _(0-3)_ : Index of the strip you are turning off
+
+&nbsp;
+
+&nbsp;
+
+## `void setStatusLight(int r, int g, int b, int brightness = 50)`
+
+### Input
+- `int r` _(0-255)_ : Intensity of red light 
+- `int g` _(0-255)_ : Intensity of green light 
+- `int b` _(0-255)_ : Intensity of blue light 
+- `int brightness` _(0-255)_ : Default value: 50. Controls the brightness of LED.
 
 &nbsp;
 
