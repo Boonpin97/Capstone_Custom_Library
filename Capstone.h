@@ -17,7 +17,7 @@
 #define ESTOP_PIN 27
 #define CURRENT_SENSOR_PIN 26
 #define GROWLIGHT_PIN 13
-#define WIFILIGHT_PIN 19
+#define STATUSLIGHT_PIN 19
 #define RESET_PIN 0
 #define NUM_LED 20
 
@@ -40,6 +40,7 @@ public:
     void setColor(int strip_index, int r, int g, int b, int brightness = DEFAULT_BRIGHTNESS);
     void offLight(int strip_index);
     void updatePower();
+    void setStatusLight(int r, int g, int b, int brightness = DEFAULT_BRIGHTNESS);
 
     int current_pos = 0;
     float power_consumption = 0.0;

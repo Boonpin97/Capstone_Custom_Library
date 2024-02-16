@@ -1,8 +1,8 @@
 #include "Capstone.h"
 #include <Adafruit_NeoPixel.h>
 
-// Tray::Tray() : strip(NUM_LED, GROWLIGHT_PIN, NEO_RGB + NEO_KHZ400) {}
-Adafruit_NeoPixel strip(NUM_LED * 4, GROWLIGHT_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel growLight(NUM_LED * 4, GROWLIGHT_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel statusLight(1, STATUSLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 
 void Tray::begin()
 {
@@ -17,9 +17,12 @@ void Tray::begin()
   pinMode(CURRENT_SENSOR_PIN, INPUT);
   pinMode(RESET_PIN, OUTPUT);
 
-  strip.begin();                           // Initialize the NeoPixel library.
-  strip.show();                            // Initialize all pixels to 'off'
-  strip.setBrightness(DEFAULT_BRIGHTNESS); // set the brightness of the lights
+  growLight.begin();                           // Initialize the NeoPixel library.
+  growLight.show();                            // Initialize all pixels to 'off'
+  growLight.setBrightness(DEFAULT_BRIGHTNESS); // set the brightness of the lights
+  statusLight.begin();                           // Initialize the NeoPixel library.
+  statusLight.show();                            // Initialize all pixels to 'off'
+  statusLight.setBrightness(DEFAULT_BRIGHTNESS); // set the brightness of the lights
 
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++) // loop to initialize the light sensors
   {
@@ -230,34 +233,34 @@ bool Tray::resetPressed()
 
 void Tray::setRedWhiteLight(int strip_index, int brightness)
 {
-  strip.setBrightness(brightness);
+  growLight.setBrightness(brightness);
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
     if (i % 4 == 0)
-      strip.setPixelColor(i, strip.Color(255, 0, 0)); // Red
+      growLight.setPixelColor(i, growLight.Color(255, 0, 0)); // Red
     else
-      strip.setPixelColor(i, strip.Color(255, 255, 255)); // White
+      growLight.setPixelColor(i, growLight.Color(255, 255, 255)); // White
   }
-  strip.show(); // show the color of the lights
+  growLight.show(); // show the color of the lights
 }
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
-  strip.setBrightness(brightness);                                          // set the brightness of the lights
+  growLight.setBrightness(brightness);                                          // set the brightness of the lights
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
-    strip.setPixelColor(i, strip.Color(b, r, g)); // set the color of the lights
+    growLight.setPixelColor(i, growLight.Color(b, r, g)); // set the color of the lights
   }
-  strip.show(); // show the color of the lights
+  growLight.show(); // show the color of the lights
 }
 
 void Tray::offLight(int strip_index)
 {
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to turn off the lights
   {
-    strip.setPixelColor(i, strip.Color(0, 0, 0)); //  off the lights
+    growLight.setPixelColor(i, growLight.Color(0, 0, 0)); //  off the lights
   }
-  strip.show(); // show the lights are off
+  growLight.show(); // show the lights are off
 }
 
 void Tray::updatePower()
@@ -271,4 +274,11 @@ void Tray::updatePower()
   power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0); // calculate the power consumption in Wh
   timer = millis();                                                                   // record last time the power was updated
   return;
+}
+
+void Tray::setStatusLight(int r, int g, int b, int brightness)
+{
+  statusLight.setBrightness(brightness);
+  statusLight.setPixelColor(0, statusLight.Color(b, r, g));
+  statusLight.show();                                       // show the color of the lights
 }
