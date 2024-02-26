@@ -24,6 +24,7 @@
 class Tray
 {
 public:
+    Tray(int slave_address);
     void begin();
     bool move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
     bool resetFront(int spd = DEFAULT_TRAY_SPEED);
@@ -41,10 +42,13 @@ public:
     void offLight(int strip_index);
     void updatePower();
     void setStatusLight(int r, int g, int b, int brightness = DEFAULT_BRIGHTNESS);
+    bool sendI2C(int address, String message);
 
     int current_pos = 0;
     float power_consumption = 0.0;
     float current_consumption = 0.0;
+    bool I2CRecieve = false;
+    String I2CMessage = "";
 
 private:
     // Parameters

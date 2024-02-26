@@ -4,6 +4,11 @@
 Adafruit_NeoPixel growLight(NUM_LED * 4, GROWLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel statusLight(1, STATUSLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 
+Tray::Tray(int slave_address)
+    : slave_address(slave_address)
+{
+}
+
 void Tray::begin()
 {
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -282,3 +287,11 @@ void Tray::setStatusLight(int r, int g, int b, int brightness)
   statusLight.setPixelColor(0, statusLight.Color(b, r, g));
   statusLight.show();                                       // show the color of the lights
 }
+
+bool Tray::sendI2C(int address, String message)
+{
+  Wire.beginTransmission(address);
+  Wire.print(message);
+  return Wire.endTransmission();                                      // show the color of the lights
+}
+
