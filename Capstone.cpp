@@ -4,11 +4,6 @@
 Adafruit_NeoPixel growLight(NUM_LED * 4, GROWLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel statusLight(1, STATUSLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 
-Tray::Tray(int slave_address)
-    : slave_address(slave_address)
-{
-}
-
 void Tray::begin()
 {
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -22,9 +17,9 @@ void Tray::begin()
   pinMode(CURRENT_SENSOR_PIN, INPUT);
   pinMode(RESET_PIN, OUTPUT);
 
-  growLight.begin();                           // Initialize the NeoPixel library.
-  growLight.show();                            // Initialize all pixels to 'off'
-  growLight.setBrightness(DEFAULT_BRIGHTNESS); // set the brightness of the lights
+  growLight.begin();                             // Initialize the NeoPixel library.
+  growLight.show();                              // Initialize all pixels to 'off'
+  growLight.setBrightness(DEFAULT_BRIGHTNESS);   // set the brightness of the lights
   statusLight.begin();                           // Initialize the NeoPixel library.
   statusLight.show();                            // Initialize all pixels to 'off'
   statusLight.setBrightness(DEFAULT_BRIGHTNESS); // set the brightness of the lights
@@ -109,7 +104,8 @@ bool Tray::move(int target_pos, int spd)
 
 bool Tray::resetFront(int spd)
 {
-  int delay = speedToDelay(spd);     // convert the speed to delay
+  int delay = speedToDelay(spd); // convert the speed to delay
+  digitalWrite(ENABLE_PIN, LOW); // enable the tray
   digitalWrite(DIR_PIN, LOW);        // set the direction to move the tray
   if (!digitalRead(FRONT_LIMIT_PIN)) // check if the front limit switch is pressed
   {
@@ -133,6 +129,7 @@ bool Tray::resetFront(int spd)
 bool Tray::resetBack(int spd)
 {
   int delay = speedToDelay(spd);    // convert the speed to delay
+  digitalWrite(ENABLE_PIN, LOW);    // enable the tray
   digitalWrite(DIR_PIN, HIGH);      // set the direction to move the tray
   if (!digitalRead(BACK_LIMIT_PIN)) // check if the front limit switch is pressed
   {
@@ -251,7 +248,7 @@ void Tray::setRedWhiteLight(int strip_index, int brightness)
 
 void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
 {
-  growLight.setBrightness(brightness);                                          // set the brightness of the lights
+  growLight.setBrightness(brightness);                                      // set the brightness of the lights
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
     growLight.setPixelColor(i, growLight.Color(b, r, g)); // set the color of the lights
@@ -285,13 +282,5 @@ void Tray::setStatusLight(int r, int g, int b, int brightness)
 {
   statusLight.setBrightness(brightness);
   statusLight.setPixelColor(0, statusLight.Color(b, r, g));
-  statusLight.show();                                       // show the color of the lights
+  statusLight.show(); // show the color of the lights
 }
-
-bool Tray::sendI2C(int address, String message)
-{
-  Wire.beginTransmission(address);
-  Wire.print(message);
-  return Wire.endTransmission();                                      // show the color of the lights
-}
-

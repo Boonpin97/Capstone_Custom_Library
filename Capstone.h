@@ -8,8 +8,8 @@
 #define STEP_PIN 33
 #define DIR_PIN 32
 #define ENABLE_PIN 25
-#define BACK_LIMIT_PIN 36
-#define FRONT_LIMIT_PIN 39
+#define BACK_LIMIT_PIN 39
+#define FRONT_LIMIT_PIN 36
 #define BACK_DHT_PIN 16
 #define FRONT_DHT_PIN 17
 #define SDA_PIN 21
@@ -24,7 +24,6 @@
 class Tray
 {
 public:
-    Tray(int slave_address);
     void begin();
     bool move(int target_pos, int spd = DEFAULT_TRAY_SPEED);
     bool resetFront(int spd = DEFAULT_TRAY_SPEED);
@@ -47,8 +46,6 @@ public:
     int current_pos = 0;
     float power_consumption = 0.0;
     float current_consumption = 0.0;
-    bool I2CRecieve = false;
-    String I2CMessage = "";
 
 private:
     // Parameters
@@ -58,7 +55,7 @@ private:
 
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
-    static const int STROKE_LENGTH = 774;
+    static const int STROKE_LENGTH = 790;
     static const int MIN_DELAY = 100;
     static const int MAX_DELAY = 1100;
     static const int NUM_LIGHT_SENSOR = 6;
