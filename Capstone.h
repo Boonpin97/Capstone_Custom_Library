@@ -34,7 +34,7 @@ public:
     float readHumiFront();
     float readHumiBack();
     bool eStopPressed();
-    bool resetPressed();
+    //bool resetPressed();
     void setRedWhiteLight(int strip_index, int brightness = DEFAULT_BRIGHTNESS);
     void setColor(int strip_index, int r, int g, int b, int brightness = DEFAULT_BRIGHTNESS);
     void offLight(int strip_index);

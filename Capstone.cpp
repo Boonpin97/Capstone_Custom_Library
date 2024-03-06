@@ -227,10 +227,10 @@ bool Tray::eStopPressed()
   return digitalRead(ESTOP_PIN); // read the input on digital pin 27:
 }
 
-bool Tray::resetPressed()
-{
-  return digitalRead(RESET_PIN); // read the input on digital pin 0:
-}
+// bool Tray::resetPressed()
+// {
+//   return digitalRead(RESET_PIN); // read the input on digital pin 0:
+// }
 
 void Tray::setRedWhiteLight(int strip_index, int brightness)
 {
