@@ -18,7 +18,6 @@
 #define CURRENT_SENSOR_PIN 26
 #define GROWLIGHT_PIN 13
 #define STATUSLIGHT_PIN 19
-#define RESET_PIN 0
 #define NUM_LED 20
 
 class Tray

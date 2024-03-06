@@ -15,7 +15,6 @@ void Tray::begin()
   pinMode(ENABLE_PIN, OUTPUT);
   pinMode(ESTOP_PIN, INPUT);
   pinMode(CURRENT_SENSOR_PIN, INPUT);
-  pinMode(RESET_PIN, OUTPUT);
 
   growLight.begin();                             // Initialize the NeoPixel library.
   growLight.show();                              // Initialize all pixels to 'off'
