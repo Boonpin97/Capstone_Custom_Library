@@ -250,7 +250,7 @@ void Tray::setColor(int strip_index, int r, int g, int b, int brightness)
   growLight.setBrightness(brightness);                                      // set the brightness of the lights
   for (int i = strip_index * NUM_LED; i < (strip_index + 1) * NUM_LED; i++) // loop to set the color of the lights
   {
-    growLight.setPixelColor(i, growLight.Color(b, r, g)); // set the color of the lights
+    growLight.setPixelColor(i, growLight.Color(r, g, b)); // set the color of the lights
   }
   growLight.show(); // show the color of the lights
 }
@@ -280,6 +280,6 @@ void Tray::updatePower()
 void Tray::setStatusLight(int r, int g, int b, int brightness)
 {
   statusLight.setBrightness(brightness);
-  statusLight.setPixelColor(0, statusLight.Color(b, r, g));
+  statusLight.setPixelColor(0, statusLight.Color(r, g, b));
   statusLight.show(); // show the color of the lights
 }
