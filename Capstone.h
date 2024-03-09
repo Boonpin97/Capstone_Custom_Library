@@ -61,7 +61,8 @@ private:
     static const int LIGHT_LOW_THRESHOLD = 10000;
     static const int LIGHT_HIGH_THRESHOLD = 20000;
     static const bool LIGHT_INTERRUPT_ENABLE = true;
-    static const int NUM_READINGS = 20;
+    static const int NUM_READINGS_CURRENT = 20;
+    static const int NUM_READINGS_LIGHT = 2;
     static constexpr float STEPS_PER_MM = STEPS_PER_REV / (3.1415 * GEAR_DIAMETER); // calculate the number of steps per mm
 
     int stepPin;    

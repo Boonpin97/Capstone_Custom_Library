@@ -7,6 +7,7 @@ Adafruit_NeoPixel statusLight(1, STATUSLIGHT_PIN, NEO_GRB + NEO_KHZ800);
 void Tray::begin()
 {
   Wire.begin(SDA_PIN, SCL_PIN);
+  // Wire.setClock(10000);
 
   pinMode(STEP_PIN, OUTPUT);
   pinMode(DIR_PIN, OUTPUT);
@@ -26,6 +27,7 @@ void Tray::begin()
   for (int i = 0; i < NUM_LIGHT_SENSOR; i++) // loop to initialize the light sensors
   {
     tcaselect(i);
+    delay(100);
     if (!light_sensor[i].begin())
     {
       Serial.print("Light sensor ");
@@ -45,6 +47,25 @@ void Tray::begin()
     }
   }
   timer = millis(); // record last time the power was updated
+}
+float *Tray::readLuxs()
+{
+  static float light_array[NUM_LIGHT_SENSOR]; // array to store the light readings
+  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)  // loop to read the light sensors
+  {
+    tcaselect(i); // select the i2c multiplexer channel
+    int loop_count = 0;
+    do
+    {
+      light_array[i] = light_sensor[i].readLux(VEML_LUX_NORMAL_NOWAIT); // read the light sensor
+      loop_count++;
+    } while (light_array[i] < 0 && loop_count < NUM_READINGS_LIGHT); // loop to read the light sensor if the reading is negative
+    if (light_array[i] < 0)
+    {
+      light_array[i] = -1;
+    }
+  }
+  return light_array; // return the light readings
 }
 
 bool Tray::move(int target_pos, int spd)
@@ -103,8 +124,8 @@ bool Tray::move(int target_pos, int spd)
 
 bool Tray::resetFront(int spd)
 {
-  int delay = speedToDelay(spd); // convert the speed to delay
-  digitalWrite(ENABLE_PIN, LOW); // enable the tray
+  int delay = speedToDelay(spd);     // convert the speed to delay
+  digitalWrite(ENABLE_PIN, LOW);     // enable the tray
   digitalWrite(DIR_PIN, LOW);        // set the direction to move the tray
   if (!digitalRead(FRONT_LIMIT_PIN)) // check if the front limit switch is pressed
   {
@@ -147,17 +168,6 @@ bool Tray::resetBack(int spd)
     current_pos = 0;
     return true;
   }
-}
-
-float *Tray::readLuxs()
-{
-  static float light_array[NUM_LIGHT_SENSOR]; // array to store the light readings
-  for (int i = 0; i < NUM_LIGHT_SENSOR; i++)  // loop to read the light sensors
-  {
-    tcaselect(i);                               // select the i2c multiplexer channel
-    light_array[i] = light_sensor[i].readLux(); // read the light sensor
-  }
-  return light_array; // return the light readings
 }
 
 void Tray::tcaselect(uint8_t i)
@@ -267,11 +277,11 @@ void Tray::offLight(int strip_index)
 void Tray::updatePower()
 {
   int sumReading = analogRead(CURRENT_SENSOR_PIN); // read the input on analog pin 0:
-  for (int i = 0; i < NUM_READINGS - 1; i++)       // loop to take the average of the readings
+  for (int i = 0; i < NUM_READINGS_CURRENT - 1; i++)       // loop to take the average of the readings
   {
     sumReading += analogRead(CURRENT_SENSOR_PIN);
   }
-  current_consumption = (0.0007 * sumReading / NUM_READINGS) + 0.174;                 // convert the analog reading (which goes from 0 - 4096) to a voltage level
+  current_consumption = (0.0007 * sumReading / NUM_READINGS_CURRENT) + 0.174;                 // convert the analog reading (which goes from 0 - 4096) to a voltage level
   power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0); // calculate the power consumption in Wh
   timer = millis();                                                                   // record last time the power was updated
   return;
