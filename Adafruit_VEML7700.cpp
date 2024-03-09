@@ -88,7 +88,7 @@ bool Adafruit_VEML7700::begin(TwoWire *theWire) {
  *    @returns Floating point Lux data
  */
 float Adafruit_VEML7700::readLux(luxMethod method) {
-  bool wait = true;
+  bool wait = false;
   switch (method) {
   case VEML_LUX_NORMAL_NOWAIT:
     wait = false;
