@@ -4,7 +4,7 @@ This library has been specifically developed for my capstone project, aiming to 
 ## Installation
 1. **Open Terminal (macOS/Linux) or Command Prompt (Windows):** 
 
-2. **Navigate to the Desired Directory:**
+2. **Navigate to the desired directory:**
    - Use the `cd` command to navigate to the Arduino library director. For example:
      ```bash
      cd /path/to/your/Arduino/library/directory
@@ -114,7 +114,7 @@ A function that unlocks the tray to allow it to be free moving
 &nbsp;
  
 ## `float readLuxs()`
-A function that cycles through each port of the multiplexer, reads the light sensor values connected to individual ports, and stores them inside an array. Outputs the pointer address of the array.
+A function that cycles through each port of the multiplexer, reads the light sensor values connected to individual ports, and stores them inside an array. Outputs the pointer address of the array. If the sensor returns a value of -1, it means it fails to read from the sensor
 
 ### Output
 - `float array` : A pointer to an array of size 6, that contains the lux readings of the 6 light sensors
