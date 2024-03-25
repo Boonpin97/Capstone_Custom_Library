@@ -32,7 +32,7 @@ void loop() {
     }
   }
   else if (state == 3) {  // State 3: Move the tray to the target position
-    if (myTray.move(target_pos, 100) == true) {                                             // Move the tray to the target position
+    if (myTray.move(target_pos, 30) == true) {                                             // Move the tray to the target position
       state = 2;
     }
     Serial.print("Current position: "); Serial.println(myTray.current_pos);  // Print out the current position of the tray
