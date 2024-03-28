@@ -54,7 +54,7 @@ private:
 
     static constexpr float GEAR_DIAMETER = 19.15;
     static const int STEPS_PER_REV = 1600;
-    static const int STROKE_LENGTH = 790;
+    static const int STROKE_LENGTH = 760;
     static const int MIN_DELAY = 100;
     static const int MAX_DELAY = 1100;
     static const int NUM_LIGHT_SENSOR = 6;
