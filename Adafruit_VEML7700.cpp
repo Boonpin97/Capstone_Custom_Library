@@ -42,7 +42,7 @@ Adafruit_VEML7700::Adafruit_VEML7700(void) {}
 bool Adafruit_VEML7700::begin(TwoWire *theWire) {
   i2c_dev = new Adafruit_I2CDevice(VEML7700_I2CADDR_DEFAULT, theWire);
 
-  if (!i2c_dev->begin()) {
+  if (!i2c_dev->begin()) { 
     return false;
   }
 
@@ -69,9 +69,9 @@ bool Adafruit_VEML7700::begin(TwoWire *theWire) {
   PowerSave_Enable = new Adafruit_I2CRegisterBits(Power_Saving, 1, 0);
   PowerSave_Mode = new Adafruit_I2CRegisterBits(Power_Saving, 2, 1);
 
-  enable(false);
-  interruptEnable(false);
-  setPersistence(VEML7700_PERS_1);
+  enable(false); 
+  interruptEnable(false); 
+  setPersistence(VEML7700_PERS_1); 
   setGain(VEML7700_GAIN_1_8);
   setIntegrationTime(VEML7700_IT_100MS);
   powerSaveEnable(false);

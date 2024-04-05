@@ -103,10 +103,10 @@ bool Tray::move(int target_pos, int spd)
       }
       else
       {
-        digitalWrite(STEP_PIN, HIGH); // move the tray
-        delayMicroseconds(delay);
+        digitalWrite(STEP_PIN, HIGH);
+        delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));  //move the tray
         digitalWrite(STEP_PIN, LOW);
-        delayMicroseconds(delay);
+        delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));
       }
     }
     if (!(digitalRead(FRONT_LIMIT_PIN) || digitalRead(BACK_LIMIT_PIN))) // check if the front or back limit switch is pressed
@@ -131,10 +131,10 @@ bool Tray::resetFront(int spd)
   {
     for (int i = 0; i < STEPS_PER_MM; i++) // loop to move the tray
     {
-      digitalWrite(STEP_PIN, HIGH); // move the tray
-      delayMicroseconds(delay);
-      digitalWrite(STEP_PIN, LOW);
-      delayMicroseconds(delay);
+        digitalWrite(STEP_PIN, HIGH);
+        delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));  //move the tray
+        digitalWrite(STEP_PIN, LOW);
+        delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));
     }
     current_pos++;
     return false;
@@ -155,10 +155,10 @@ bool Tray::resetBack(int spd)
   {
     for (int i = 0; i < STEPS_PER_MM; i++) // loop to move the tray
     {
-      digitalWrite(STEP_PIN, HIGH); // move the tray
-      delayMicroseconds(delay);
+      digitalWrite(STEP_PIN, HIGH);
+      delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));
       digitalWrite(STEP_PIN, LOW);
-      delayMicroseconds(delay);
+      delayMicroseconds(delay + 100 * sin(2 * PI * i / STEPS_PER_MM));
     }
     current_pos--;
     return false;
@@ -276,12 +276,12 @@ void Tray::offLight(int strip_index)
 
 void Tray::updatePower()
 {
-  int sumReading = analogRead(CURRENT_SENSOR_PIN); // read the input on analog pin 0:
-  for (int i = 0; i < NUM_READINGS_CURRENT - 1; i++)       // loop to take the average of the readings
+  int sumReading = analogRead(CURRENT_SENSOR_PIN);   // read the input on analog pin 0:
+  for (int i = 0; i < NUM_READINGS_CURRENT - 1; i++) // loop to take the average of the readings
   {
     sumReading += analogRead(CURRENT_SENSOR_PIN);
   }
-  current_consumption = (0.0007 * sumReading / NUM_READINGS_CURRENT) + 0.174;                 // convert the analog reading (which goes from 0 - 4096) to a voltage level
+  current_consumption = (0.0007 * sumReading / NUM_READINGS_CURRENT) + 0.174;         // convert the analog reading (which goes from 0 - 4096) to a voltage level
   power_consumption += (current_consumption * 24.0 * (millis() - timer) / 3600000.0); // calculate the power consumption in Wh
   timer = millis();                                                                   // record last time the power was updated
   return;
